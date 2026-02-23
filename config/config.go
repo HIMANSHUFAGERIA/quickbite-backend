@@ -48,7 +48,7 @@ func Load() *Config {
 func getEnv(key, defaultValue string) string {
 	value := os.Getenv(key)
 	if value == "" {
-		return defaultValue
-	}
+	value = "postgres://postgres:postgres@localhost:5432/railway?sslmode=disable"
+}
 	return value
 }
