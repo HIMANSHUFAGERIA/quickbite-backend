@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	DatabaseURL string
 	DBHost      string
 	DBPort      string
 	DBUser      string
@@ -20,8 +21,8 @@ type Config struct {
 }
 
 func Load() *Config {
-	// Only load .env in development
 	env := os.Getenv("ENVIRONMENT")
+
 	if env != "production" {
 		err := godotenv.Load()
 		if err != nil {
@@ -29,7 +30,10 @@ func Load() *Config {
 		}
 	}
 
+	databaseURL := os.Getenv("DATABASE_URL")
+
 	return &Config{
+		DatabaseURL: databaseURL,
 		DBHost:      getEnv("DB_HOST", "localhost"),
 		DBPort:      getEnv("DB_PORT", "5432"),
 		DBUser:      getEnv("DB_USER", "postgres"),
@@ -41,7 +45,6 @@ func Load() *Config {
 		FrontendURL: getEnv("FRONTEND_URL", "http://localhost:3000"),
 	}
 }
-
 func getEnv(key, defaultValue string) string {
 	value := os.Getenv(key)
 	if value == "" {
